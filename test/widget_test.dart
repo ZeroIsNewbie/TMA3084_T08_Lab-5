@@ -1,30 +1,67 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 
 import 'package:lab_5/main.dart';
+import 'package:lab_5/providers/navigation_provider.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  group('NavigationProvider', () {
+    test('starts on the home page', () {
+      expect(NavigationProvider().currentIndex, NavigationIndex.home);
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('notifies listeners only when the index changes', () {
+      final provider = NavigationProvider();
+      var notifications = 0;
+      provider.addListener(() => notifications++);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      provider.changeIndex(NavigationIndex.records);
+      provider.changeIndex(NavigationIndex.records);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      expect(provider.currentIndex, NavigationIndex.records);
+      expect(notifications, 1);
+    });
+
+    test('ignores out-of-range indices', () {
+      final provider = NavigationProvider();
+
+      provider.changeIndex(-1);
+      provider.changeIndex(NavigationIndex.pageCount);
+
+      expect(provider.currentIndex, NavigationIndex.home);
+    });
+  });
+
+  group('Navigation UI', () {
+    Widget buildApp() => ChangeNotifierProvider(
+      create: (_) => NavigationProvider(),
+      child: const MyApp(),
+    );
+
+    testWidgets('bottom bar switches to Records', (tester) async {
+      await tester.pumpWidget(buildApp());
+
+      await tester.tap(find.text('Records'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Student Records'), findsOneWidget);
+    });
+
+    testWidgets('drawer opens Category and About', (tester) async {
+      await tester.pumpWidget(buildApp());
+
+      await tester.tap(find.byTooltip('Open navigation menu'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Category'));
+      await tester.pumpAndSettle();
+      expect(find.text('Software Engineering'), findsWidgets);
+
+      await tester.tap(find.byTooltip('Open navigation menu'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('About'));
+      await tester.pumpAndSettle();
+      expect(find.text('Student Management Application'), findsOneWidget);
+    });
   });
 }

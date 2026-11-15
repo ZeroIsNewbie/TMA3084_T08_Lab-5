@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'providers/navigation_provider.dart';
+
 class AppDrawer extends StatelessWidget {
-  final Function(int) onItemSelected;
+  final ValueChanged<int> onItemSelected;
 
   const AppDrawer({super.key, required this.onItemSelected});
 
@@ -23,7 +25,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Category'),
             onTap: () {
               Navigator.pop(context);
-              onItemSelected(3);
+              onItemSelected(NavigationIndex.category);
             },
           ),
           ListTile(
@@ -31,7 +33,7 @@ class AppDrawer extends StatelessWidget {
             title: const Text('About'),
             onTap: () {
               Navigator.pop(context);
-              onItemSelected(4);
+              onItemSelected(NavigationIndex.about);
             },
           ),
         ],
@@ -39,3 +41,4 @@ class AppDrawer extends StatelessWidget {
     );
   }
 }
+
