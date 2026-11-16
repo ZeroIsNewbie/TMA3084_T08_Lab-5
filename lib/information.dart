@@ -1,6 +1,6 @@
-import "package:flutter/material.dart";
-
 import 'details.dart';
+
+import 'package:material_ui/material_ui.dart';
 
 class Information extends StatelessWidget {
   const Information({super.key});
@@ -12,7 +12,7 @@ class Information extends StatelessWidget {
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: students.length,
-        separatorBuilder: (_, __) => const Divider(),
+        separatorBuilder: (_, _) => const Divider(),
         itemBuilder: (context, index) {
           final student = students[index];
           return ListTile(

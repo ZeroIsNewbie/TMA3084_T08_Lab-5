@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class About extends StatelessWidget {
   const About({super.key});
@@ -29,8 +29,8 @@ class About extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.black.withOpacity(0.2),
-                      Colors.black.withOpacity(0.7),
+                      Colors.black.withValues(alpha: 0.2),
+                      Colors.black.withValues(alpha: 0.7),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
