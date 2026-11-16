@@ -33,6 +33,6 @@ class NavigationProvider extends ChangeNotifier {
     if (index < 0 || index >= NavigationIndex.pageCount) return;
 
     _currentIndex = index;
-    notifyListeners();// notify listeners when the selected page changes.
+    notifyListeners(); // notify listeners when the selected page changes.
   }
 }

@@ -8,22 +8,20 @@ class StudentRecordDataTable extends StatefulWidget {
 }
 
 final List<User> studentUsers = [
-    User("Jee Hui Ying", 21, 104511, 4.0, "Software Engineering"),
-    User("Leong Jao Yuan", 22, 104742, 4.0, "Software Engineering"),
-    User("Lim Gek Hong", 22, 104763, 4.0, "Software Engineering"),
-    User("Loh Zhi Yun", 22, 104788, 4.0, "Software Engineering"),
-    User("Ali", 21, 100000, 3.4, "Multimedia Computing"),
-    User("Siti", 19, 100001, 2.8, "Multimedia Computing"),
-    User("Rahman", 25, 100002, 3.9, "Computational Science"),
-    User("Bala", 22, 100003, 2.7, "Network Computing"),
-    User("Zara", 20, 100004, 2.3, "Data Engineering"),
-    User("Hafiz", 23, 100005, 3.1, "Data Engineering"),
-  ];
-
+  User("Jee Hui Ying", 21, 104511, 4.0, "Software Engineering"),
+  User("Leong Jao Yuan", 22, 104742, 4.0, "Software Engineering"),
+  User("Lim Gek Hong", 22, 104763, 4.0, "Software Engineering"),
+  User("Loh Zhi Yun", 22, 104788, 4.0, "Software Engineering"),
+  User("Ali", 21, 100000, 3.4, "Multimedia Computing"),
+  User("Siti", 19, 100001, 2.8, "Multimedia Computing"),
+  User("Rahman", 25, 100002, 3.9, "Computational Science"),
+  User("Bala", 22, 100003, 2.7, "Network Computing"),
+  User("Zara", 20, 100004, 2.3, "Data Engineering"),
+  User("Hafiz", 23, 100005, 3.1, "Data Engineering"),
+];
 
 class _StudentRecordDataTableState extends State<StudentRecordDataTable> {
-  
-  List<User> users= List.of(studentUsers);
+  List<User> users = List.of(studentUsers);
   bool sortAscending = true;
   int? sortColumnIndex = 0;
 
