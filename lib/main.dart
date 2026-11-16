@@ -1,74 +1,80 @@
+import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
+
+import 'about.dart';
+import 'category.dart';
+import 'drawer.dart';
 import 'home.dart';
 import 'information.dart';
-//import 'records.dart';
-// import 'category.dart';
-import 'about.dart';
-import 'drawer.dart';
-
-import 'package:flutter/material.dart';
+import 'providers/navigation_provider.dart';
+import 'records.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => NavigationProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final tabs = [
-    Center(child: Home()),
-    Center(child: Information()),
-    //Center(child: Records()),
-    //Center(child: Category()),
-    Center(child: About()),
-  ];
-  int _currentIndex = 0;
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.pink,
-          title: Text(
-            'StudentHub',
-            style: TextStyle(fontSize: 26, color: Colors.white),
-          ),
-        ),
+    // MyApp does not listen to the provider, so MaterialApp is built once.
+    return const MaterialApp(home: MainScreen());
+  }
+}
 
-        drawer: AppDrawer(
-          onItemSelected: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-        ),
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
-        body: tabs[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.pinkAccent,
-          selectedItemColor: Colors.white,
-          selectedFontSize: 19.0,
-          unselectedFontSize: 14.0,
-          iconSize: 30.0,
-          currentIndex: _currentIndex < 3 ? _currentIndex : 0,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Students',
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Records'),
-          ],
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+  // Order must match the indices in NavigationIndex.
+  static const List<Widget> _pages = [
+    Center(child: Home()),
+    Center(child: Information()),
+    StudentRecordDataTable(),
+    Category(),
+    About(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final currentIndex = context.watch<NavigationProvider>().currentIndex;
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Text(
+          'StudentHub',
+          style: TextStyle(fontSize: 26, color: Colors.white),
         ),
+      ),
+      drawer: AppDrawer(
+        onItemSelected: (index) =>
+            context.read<NavigationProvider>().changeIndex(index),
+      ),
+      body: _pages[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.lightBlueAccent,
+        selectedItemColor: Colors.white,
+        selectedFontSize: 19.0,
+        unselectedFontSize: 14.0,
+        iconSize: 30.0,
+        // Drawer-only pages (Category, About) fall back to the first tab,
+        // exactly as in the original UI.
+        currentIndex: currentIndex < NavigationIndex.bottomBarCount
+            ? currentIndex
+            : NavigationIndex.home,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Students'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Records'),
+        ],
+        onTap: (index) => context.read<NavigationProvider>().changeIndex(index),
       ),
     );
   }
