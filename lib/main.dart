@@ -46,7 +46,7 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.pink,
         title: const Text(
           'StudentHub',
           style: TextStyle(fontSize: 26, color: Colors.white),
@@ -59,7 +59,7 @@ class MainScreen extends StatelessWidget {
       body: _pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.pinkAccent,
         selectedItemColor: Colors.white,
         selectedFontSize: 19.0,
         unselectedFontSize: 14.0,
